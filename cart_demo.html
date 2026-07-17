@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Cart Demo</title>
+  <style>#cart { display: none; } .product { margin: 8px 0; }</style>
+</head>
+<body>
+  <main id="products">
+    <h1>Products</h1>
+    <div class="product">Product 1 — $200 <button id="addProduct1">Add to cart</button></div>
+    <div class="product">Product 2 — $400 <button id="addProduct2">Add to cart</button></div>
+    <button id="cartLink">View cart</button>
+  </main>
+
+  <section id="cart">
+    <h1>Your cart</h1>
+    <label>Product 1 quantity <input id="product1-quantity" value="0" readonly></label>
+    <label>Product 2 quantity <input id="product2-quantity" value="0" readonly></label>
+    <p class="cart-total">Total: $0</p>
+  </section>
+
+  <script>
+    const prices = { product1: 200, product2: 400 };
+    const quantities = { product1: 0, product2: 0 };
+
+    function updateCart() {
+      document.getElementById('product1-quantity').value = quantities.product1;
+      document.getElementById('product2-quantity').value = quantities.product2;
+      const total = quantities.product1 * prices.product1 + quantities.product2 * prices.product2;
+      document.querySelector('.cart-total').textContent = `Total: $${total}`;
+    }
+
+    document.getElementById('addProduct1').addEventListener('click', () => {
+      quantities.product1 += 1;
+      updateCart();
+    });
+    document.getElementById('addProduct2').addEventListener('click', () => {
+      quantities.product2 += 1;
+      updateCart();
+    });
+    document.getElementById('cartLink').addEventListener('click', () => {
+      document.getElementById('products').style.display = 'none';
+      document.getElementById('cart').style.display = 'block';
+    });
+  </script>
+</body>
+</html>

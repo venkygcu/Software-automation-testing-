@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Product Filter Demo</title>
+  <style>
+    .product-item { margin: 8px 0; }
+    .selected { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Products</h1>
+  <button id="category-electronics" type="button">Electronics</button>
+  <button id="category-clothing" type="button">Clothing</button>
+
+  <label>Minimum price <input id="price-min" type="number" min="0"></label>
+  <label>Maximum price <input id="price-max" type="number" min="0"></label>
+  <button id="applyFilters" type="button">Apply filters</button>
+
+  <section id="products">
+    <article class="product-item" data-category="electronics" data-price="149.99">Headphones — $149.99</article>
+    <article class="product-item" data-category="electronics" data-price="399.00">Monitor — $399.00</article>
+    <article class="product-item" data-category="electronics" data-price="799.00">Laptop — $799.00</article>
+    <article class="product-item" data-category="clothing" data-price="120.00">Jacket — $120.00</article>
+  </section>
+
+  <script>
+    let selectedCategory = '';
+
+    document.querySelectorAll('[id^="category-"]').forEach((button) => {
+      button.addEventListener('click', () => {
+        selectedCategory = button.id.replace('category-', '');
+        document.querySelectorAll('[id^="category-"]').forEach((item) => {
+          item.classList.toggle('selected', item === button);
+        });
+      });
+    });
+
+    document.getElementById('applyFilters').addEventListener('click', () => {
+      const min = Number(document.getElementById('price-min').value || 0);
+      const max = Number(document.getElementById('price-max').value || Infinity);
+
+      document.querySelectorAll('.product-item').forEach((product) => {
+        const matchesCategory = product.dataset.category === selectedCategory;
+        const price = Number(product.dataset.price);
+        product.hidden = !(matchesCategory && price >= min && price <= max);
+      });
+    });
+  </script>
+</body>
+</html>

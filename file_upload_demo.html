@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>File Upload Demo</title></head>
+<body>
+  <h1>Files</h1>
+  <input id="fileUpload" type="file">
+  <button id="uploadButton" type="button">Upload</button>
+  <p class="upload-success" aria-live="polite"></p>
+  <p class="upload-error" aria-live="polite"></p>
+  <button id="downloadButton" type="button">Download report</button>
+  <p class="download-success" aria-live="polite"></p>
+
+  <script>
+    const input = document.getElementById('fileUpload');
+    const success = document.querySelector('.upload-success');
+    const error = document.querySelector('.upload-error');
+
+    document.getElementById('uploadButton').addEventListener('click', () => {
+      const file = input.files[0];
+      success.textContent = '';
+      error.textContent = '';
+      if (file && file.name.toLowerCase().endsWith('.pdf')) {
+        success.textContent = 'File uploaded successfully.';
+      } else {
+        error.textContent = 'Unsupported file format.';
+      }
+    });
+
+    document.getElementById('downloadButton').addEventListener('click', () => {
+      const report = new Blob(['Download verified.\n'], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(report);
+      link.download = 'downloaded-report.txt';
+      link.click();
+      URL.revokeObjectURL(link.href);
+      document.querySelector('.download-success').textContent = 'File downloaded successfully.';
+    });
+  </script>
+</body>
+</html>
